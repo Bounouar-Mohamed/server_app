@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+
 
 
 let user = {
@@ -17,18 +20,16 @@ app.use(function(req, res, next) {
     next();
   });
 
+  
 app.get('/users', (req, res) => {
     res.send(user);
 });
 
+app.post("/users", function (req, res) {
 
-
-app.use(bodyParser.json());
-
-app.get("/", (req, res) => {
-    res.send();
-});
-
-app.post("/data", function (req, res) {
-    console.log (req.body.data);
+    let post = (req.body.data);
+    
+    const DataPost = JSON.stringify(post)
+    res.send('post: ' + DataPost);
+    console.log(DataPost);
 });
