@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-
+const fs = require('fs');
 
 
 
@@ -27,9 +27,17 @@ app.get('/users', (req, res) => {
 
 app.post("/users", function (req, res) {
 
-    let post = (req.body.data);
+    console.log(req.body.data);
+
     
-    const DataPost = JSON.stringify(post)
-    res.send('post: ' + DataPost);
-    console.log(DataPost);
+
+fs.writeFile("./data.txt", req.body.data, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+    console.log("The file was saved!");
 });
+});
+
+// Or
+    
