@@ -19,28 +19,40 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-/* 
-app.get('/users', (req, res) => {
+
+  app.get('/users', (req, res) => {
 
     res.send(user);
 });
-*/
-app.get('/users', (req, res) => {
-    
-    res.sendFile(__dirname +'/data.json');
+
+app.get('/actions/:id', (req, res) => {
+  
+  let read = require(__dirname+ "/data.json") ;
+  let id = req.params.id
+  let sea =  read[id];
+
+    res.send(sea)
 });
  
 
 app.post("/users", function (req, res,) {
+  
+       console.log(req.body.data);
+       let DataPost = {Data: req.body.data};  
 
-    console.log(req.body.data);
 
-     
-    fs.appendFile("./data.json",JSON.stringify({ Data : req.body.data }) , function(err) {
-    if(err) {
-        return console.log(err);
-    }
-    console.log("The file was saved!");
+      fs.readFile('./data.json', 'utf8' , (err, data) => {
+        if (data){ 
 
-});
+            let x = JSON.parse(data)
+            x.push(DataPost); 
+            fs.writeFile("./data.json", JSON.stringify(x) , function (err) {});
+
+        }
+        else {
+            let array = []
+            array.push(DataPost); 
+            fs.writeFile("./data.json", JSON.stringify(array) , function (err){});
+       }})
+
 });
